@@ -1,11 +1,13 @@
+using Asp.Versioning;
 using BookCollectionLibrary.API.Model;
 using BookCollectionLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookCollectionLibrary.API.Controllers
 {
+    [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : ControllerBase
     {
 
