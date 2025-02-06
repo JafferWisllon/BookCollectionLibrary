@@ -1,6 +1,8 @@
+using BookCollectionLibrary.API.Business;
+using BookCollectionLibrary.API.Business.Implementations;
 using BookCollectionLibrary.API.Model.Context;
-using BookCollectionLibrary.API.Services;
-using BookCollectionLibrary.API.Services.Implementations;
+using BookCollectionLibrary.API.Repository;
+using BookCollectionLibrary.API.Repository.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +21,8 @@ builder.Services.AddDbContext<MySQLContext>(options =>
 
 builder.Services.AddApiVersioning();
 
-builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
+builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
 var app = builder.Build();
 

@@ -1,12 +1,12 @@
 ﻿using BookCollectionLibrary.API.Model;
 using BookCollectionLibrary.API.Model.Context;
 
-namespace BookCollectionLibrary.API.Services.Implementations;
+namespace BookCollectionLibrary.API.Repository.Implementations;
 
-public class PersonServiceImplementation : IPersonService
+public class PersonRepositoryImplementation : IPersonRepository
 {
     private MySQLContext _context;
-    public PersonServiceImplementation(MySQLContext context)
+    public PersonRepositoryImplementation(MySQLContext context)
     {
         _context = context;
     }
@@ -72,7 +72,7 @@ public class PersonServiceImplementation : IPersonService
         }
     }
 
-    private bool Exists(long id)
+    public bool Exists(long id)
     {
         return _context.Persons.Any(p => p.Id.Equals(id));
     }

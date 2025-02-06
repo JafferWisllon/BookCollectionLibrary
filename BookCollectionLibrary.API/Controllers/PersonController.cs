@@ -1,6 +1,6 @@
 using Asp.Versioning;
+using BookCollectionLibrary.API.Business;
 using BookCollectionLibrary.API.Model;
-using BookCollectionLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookCollectionLibrary.API.Controllers
@@ -12,24 +12,24 @@ namespace BookCollectionLibrary.API.Controllers
     {
 
         private readonly ILogger<PersonController> _logger;
-        private readonly IPersonService _personService;
+        private readonly IPersonBusiness _personBusiness;
 
-        public PersonController(ILogger<PersonController> logger, IPersonService personService)
+        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
-            _personService = personService;
+            _personBusiness = personBusiness;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_personService.FindAll());
+            return Ok(_personBusiness.FindAll());
         }
 
         [HttpGet("{id:long}")]
         public IActionResult Get(long id)
         {
-            var person = _personService.FindById(id);
+            var person = _personBusiness.FindById(id);
             if (person is null)
                 return NotFound();
 
@@ -40,20 +40,20 @@ namespace BookCollectionLibrary.API.Controllers
         public IActionResult Post([FromBody] Person person)
         {
             if (person is null) return BadRequest();
-            return Ok(_personService.Create(person));
+            return Ok(_personBusiness.Create(person));
         }
 
         [HttpPut]
         public IActionResult Put([FromBody] Person person)
         {
             if (person is null) return BadRequest();
-            return Ok(_personService.Update(person));
+            return Ok(_personBusiness.Update(person));
         }
 
         [HttpDelete("{id:long}")]
         public IActionResult Delete(long id)
         {
-            _personService.Delete(id);
+            _personBusiness.Delete(id);
             return NoContent();
         }
     }
