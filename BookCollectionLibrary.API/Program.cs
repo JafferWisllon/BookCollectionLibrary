@@ -1,8 +1,7 @@
 using BookCollectionLibrary.API.Business;
 using BookCollectionLibrary.API.Business.Implementations;
 using BookCollectionLibrary.API.Model.Context;
-using BookCollectionLibrary.API.Repository;
-using BookCollectionLibrary.API.Repository.Implementations;
+using BookCollectionLibrary.API.Repository.Generic;
 using EvolveDb;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
@@ -34,10 +33,8 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddApiVersioning();
 
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 builder.Services.AddScoped<IBookService, BookBusinessImplementation>();
-builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
-
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

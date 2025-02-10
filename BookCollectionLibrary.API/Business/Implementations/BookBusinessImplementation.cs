@@ -1,13 +1,13 @@
 ﻿using BookCollectionLibrary.API.Model;
-using BookCollectionLibrary.API.Repository;
+using BookCollectionLibrary.API.Repository.Generic;
 
 namespace BookCollectionLibrary.API.Business.Implementations
 {
     public class BookBusinessImplementation : IBookService
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IRepository<Book> _bookRepository;
 
-        public BookBusinessImplementation(IBookRepository bookRepository)
+        public BookBusinessImplementation(IRepository<Book> bookRepository)
             => _bookRepository = bookRepository;
 
         public List<Book> FindAll()
