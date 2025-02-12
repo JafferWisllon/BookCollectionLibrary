@@ -1,4 +1,6 @@
-﻿using BookCollectionLibrary.API.Model;
+﻿using BookCollectionLibrary.API.Data.Converter.Implementations;
+using BookCollectionLibrary.API.Data.VO;
+using BookCollectionLibrary.API.Model;
 using BookCollectionLibrary.API.Repository.Generic;
 
 namespace BookCollectionLibrary.API.Business.Implementations;
@@ -6,27 +8,36 @@ namespace BookCollectionLibrary.API.Business.Implementations;
 public class PersonBusinessImplementation : IPersonBusiness
 {
     private readonly IRepository<Person> _repository;
-    public PersonBusinessImplementation(IRepository<Person> repository)
-        => _repository = repository;
-
-    public List<Person> FindAll()
+    private readonly PersonConverter _converter;
+    public PersonBusinessImplementation(
+        IRepository<Person> repository)
     {
-        return _repository.FindAll();
+        _repository = repository;
+        _converter = new PersonConverter();
     }
 
-    public Person FindById(long id)
+    public List<PersonVO> FindAll()
     {
-        return _repository.FindById(id);
+        return _converter.Parse(_repository.FindAll());
     }
 
-    public Person Create(Person person)
+    public PersonVO FindById(long id)
     {
-        return _repository.Create(person);
+        return _converter.Parse(_repository.FindById(id));
     }
 
-    public Person Update(Person person)
+    public PersonVO Create(PersonVO person)
     {
-        return _repository.Update(person);
+        var personEntity = _converter.Parse(person);
+        personEntity = _repository.Create(personEntity);
+        return _converter.Parse(personEntity);
+    }
+
+    public PersonVO Update(PersonVO person)
+    {
+        var personEntity = _converter.Parse(person);
+        personEntity = _repository.Update(personEntity);
+        return _converter.Parse(personEntity);
     }
 
     public void Delete(long id)

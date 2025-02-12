@@ -1,4 +1,6 @@
-﻿using BookCollectionLibrary.API.Model;
+﻿using BookCollectionLibrary.API.Data.Converter.Implementations;
+using BookCollectionLibrary.API.Data.VO;
+using BookCollectionLibrary.API.Model;
 using BookCollectionLibrary.API.Repository.Generic;
 
 namespace BookCollectionLibrary.API.Business.Implementations
@@ -6,28 +8,35 @@ namespace BookCollectionLibrary.API.Business.Implementations
     public class BookBusinessImplementation : IBookService
     {
         private readonly IRepository<Book> _bookRepository;
-
+        private readonly BookConverter _converter;
         public BookBusinessImplementation(IRepository<Book> bookRepository)
-            => _bookRepository = bookRepository;
-
-        public List<Book> FindAll()
         {
-            return _bookRepository.FindAll();
+            _bookRepository = bookRepository;
+            _converter = new BookConverter();
         }
 
-        public Book FindById(long id)
+        public List<BookVO> FindAll()
         {
-            return _bookRepository.FindById(id);
+            return _converter.Parse(_bookRepository.FindAll());
         }
 
-        public Book Create(Book book)
+        public BookVO FindById(long id)
         {
-            return _bookRepository.Create(book);
+            return _converter.Parse(_bookRepository.FindById(id));
         }
 
-        public Book Update(Book person)
+        public BookVO Create(BookVO book)
         {
-            return _bookRepository.Update(person);
+            var bookEntity = _converter.Parse(book);
+            bookEntity = _bookRepository.Create(bookEntity);
+            return _converter.Parse(bookEntity);
+        }
+
+        public BookVO Update(BookVO book)
+        {
+            var bookEntity = _converter.Parse(book);
+            bookEntity = _bookRepository.Update(bookEntity);
+            return _converter.Parse(bookEntity);
         }
 
         public void Delete(long id)

@@ -1,6 +1,6 @@
 using Asp.Versioning;
 using BookCollectionLibrary.API.Business;
-using BookCollectionLibrary.API.Model;
+using BookCollectionLibrary.API.Data.VO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookCollectionLibrary.API.Controllers
@@ -11,14 +11,10 @@ namespace BookCollectionLibrary.API.Controllers
     public class PersonController : ControllerBase
     {
 
-        private readonly ILogger<PersonController> _logger;
         private readonly IPersonBusiness _personBusiness;
 
-        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
-        {
-            _logger = logger;
-            _personBusiness = personBusiness;
-        }
+        public PersonController(IPersonBusiness personBusiness)
+            => _personBusiness = personBusiness;
 
         [HttpGet]
         public IActionResult Get()
@@ -37,14 +33,14 @@ namespace BookCollectionLibrary.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Person person)
+        public IActionResult Post([FromBody] PersonVO person)
         {
             if (person is null) return BadRequest();
             return Ok(_personBusiness.Create(person));
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Person person)
+        public IActionResult Put([FromBody] PersonVO person)
         {
             if (person is null) return BadRequest();
             return Ok(_personBusiness.Update(person));

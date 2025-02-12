@@ -1,12 +1,12 @@
-﻿using BookCollectionLibrary.API.Model;
+﻿using BookCollectionLibrary.API.Data.VO;
 
 namespace BookCollectionLibrary.API.Business;
 
 public interface IBookService
 {
-    Book Create(Book book);
-    Book FindById(long id);
-    Book Update(Book person);
+    BookVO Create(BookVO book);
+    BookVO FindById(long id);
+    BookVO Update(BookVO book);
     void Delete(long id);
-    List<Book> FindAll();
+    List<BookVO> FindAll();
 }

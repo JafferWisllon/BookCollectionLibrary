@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
 using BookCollectionLibrary.API.Business;
-using BookCollectionLibrary.API.Model;
+using BookCollectionLibrary.API.Data.VO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookCollectionLibrary.API.Controllers
@@ -34,14 +34,14 @@ namespace BookCollectionLibrary.API.Controllers
         }
 
         [HttpPost()]
-        public IActionResult Create(Book book)
+        public IActionResult Create(BookVO book)
         {
             if (book is null) return BadRequest();
             return Ok(_bookService.Create(book));
         }
 
         [HttpPut()]
-        public IActionResult Update([FromBody] Book book)
+        public IActionResult Update([FromBody] BookVO book)
         {
             if (book is null) return BadRequest();
             return Ok(_bookService.Update(book));
