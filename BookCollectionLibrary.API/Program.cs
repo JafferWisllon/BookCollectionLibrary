@@ -1,5 +1,7 @@
 using BookCollectionLibrary.API.Business;
 using BookCollectionLibrary.API.Business.Implementations;
+using BookCollectionLibrary.API.Hypermedia.Enricher;
+using BookCollectionLibrary.API.Hypermedia.Filters;
 using BookCollectionLibrary.API.Model.Context;
 using BookCollectionLibrary.API.Repository.Generic;
 using EvolveDb;
@@ -39,6 +41,12 @@ builder.Services.AddMvc(options =>
 })
 .AddXmlSerializerFormatters();
 
+var filterOptions = new HyperMediaFilterOptions();
+filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
+
+builder.Services.AddSingleton(filterOptions);
+
 builder.Services.AddApiVersioning();
 
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
@@ -55,7 +63,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
+app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVersion}/{id?}");
 app.Run();
 
 static void MigrationDatabase(string connection)

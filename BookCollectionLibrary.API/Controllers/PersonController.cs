@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using BookCollectionLibrary.API.Business;
 using BookCollectionLibrary.API.Data.VO;
+using BookCollectionLibrary.API.Hypermedia.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookCollectionLibrary.API.Controllers
@@ -17,12 +18,14 @@ namespace BookCollectionLibrary.API.Controllers
             => _personBusiness = personBusiness;
 
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_personBusiness.FindAll());
         }
 
         [HttpGet("{id:long}")]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
             var person = _personBusiness.FindById(id);
@@ -33,6 +36,7 @@ namespace BookCollectionLibrary.API.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] PersonVO person)
         {
             if (person is null) return BadRequest();
@@ -40,6 +44,7 @@ namespace BookCollectionLibrary.API.Controllers
         }
 
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] PersonVO person)
         {
             if (person is null) return BadRequest();
